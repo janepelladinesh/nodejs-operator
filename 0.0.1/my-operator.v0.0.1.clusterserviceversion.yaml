@@ -1,0 +1,135 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  name: my-operator.v0.0.1
+  namespace: placeholder
+  annotations:
+    alm-examples: >-
+      [{"apiVersion":"","kind":"Nodejs","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"Nodejs","metadata":{"name":""},"spec":{}}]
+    categories: ' OpenShift Optional'
+    certified: 'false'
+    description: sample operator
+    containerImage: ''
+    support: ''
+    capabilities: Seamless Upgrades
+    repository: ''
+spec:
+  displayName: nodejs operator
+  description: |
+    ## About the managed application
+    ## About this Operator
+    ## Prerequisites for enabling this Operator
+  maturity: beta
+  version: 0.0.1
+  replaces: nodejsoperator.v0.0.1
+  minKubeVersion: 1.11.0
+  keywords: []
+  maintainers:
+    - name: ''
+      email: ''
+  provider:
+    name: Acme
+  labels: {}
+  selector:
+    matchLabels: {}
+  links:
+    - name: Blog
+      url: >-
+        https://github.com/operator-framework/community-operators/blob/master/docs/testing-operators.md
+  icon:
+    base64data: ''
+    mediatype: ''
+  customresourcedefinitions:
+    owned:
+      - name: nodejs.node.example.com
+        displayName: Nodejs
+        kind: Nodejs
+        version: v1beta1
+        description: CRD is introducing nodejs into kubernets
+        resources:
+          - version: v1
+            kind: Deployment
+          - version: v1
+            kind: Service
+          - version: v1
+            kind: ReplicaSet
+          - version: v1
+            kind: Pod
+          - version: v1
+            kind: Secret
+          - version: v1
+            kind: ConfigMap
+        specDescriptors: []
+        statusDescriptors: []
+    required: []
+  install:
+    strategy: deployment
+    spec:
+      permissions:
+        - serviceAccountName: nodejs-operator
+          rules:
+            - apiGroups: '""'
+              resources:
+                - pods
+                - services
+                - persistentvolumeclaims
+                - serviceaccounts
+                - events
+                - configmaps
+                - endpoints
+                - secrets
+              verbs:
+                - '*'
+      clusterPermissions:
+        - serviceAccountName: node-operator
+      deployments:
+        - name: add-deployment
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                name: nodejs-operator
+            template:
+              metadata:
+                labels:
+                  name: nodejs-operator
+              spec:
+                serviceAccountName: nodejs-operator
+                containers:
+                  - name: ansible
+                    command:
+                      - /usr/local/bin/ao-logs
+                      - /tmp/ansible-operator/runner
+                      - stdout
+                    image: 'quay.io/openlabs_operator/kube-operator:operator'
+                    imagePullPolicy: Always
+                    volumeMounts:
+                      - mountPath: /tmp/ansible-operator/runner
+                        name: runner
+                        readOnly: true
+                  - name: operator
+                    image: 'quay.io/openlabs_operator/kube-operator:operator'
+                    imagePullPolicy: Always
+                    volumeMounts:
+                      - mountPath: /tmp/ansible-operator/runner
+                        name: runner
+                    env:
+                      - name: WATCH_NAMESPACE
+                        valueFrom:
+                          fieldRef:
+                            fieldPath: metadata.namespace
+                      - name: POD_NAME
+                        valueFrom:
+                          fieldRef:
+                            fieldPath: metadata.name
+                      - name: OPERATOR_NAME
+                        value: nodejs-operator
+  installModes:
+    - type: OwnNamespace
+      supported: true
+    - type: SingleNamespace
+      supported: true
+    - type: MultiNamespace
+      supported: false
+    - type: AllNamespaces
+      supported: false
