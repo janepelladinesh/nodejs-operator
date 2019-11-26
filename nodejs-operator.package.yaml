@@ -1,5 +1,5 @@
 channels:
-- currentCSV: nodejs-operator.v0.1.1
+- currentCSV: nodejs-operator.v0.0.1
   name: stable
 defaultChannel: stable
 packageName: nodejs-operator
