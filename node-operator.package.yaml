@@ -1,0 +1,4 @@
+packageName: nodejs-operator
+channels:
+  - name: nodejs-operator.v0.01
+    currentCSV: node-operator.v0.0.1
