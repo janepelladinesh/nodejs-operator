@@ -1,5 +1,4 @@
 channels:
 - currentCSV: node-operator.v0.0.1
   name: stable
-defaultChannel: stable
 packageName: node-operator
