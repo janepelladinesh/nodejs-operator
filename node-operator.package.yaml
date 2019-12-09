@@ -1,4 +1,4 @@
+packageName: nodejs-operator
 channels:
-- currentCSV: node-operator.v0.0.1
-  name: beta
-packageName: node-operator
+  - name: beta
+    currentCSV: node-operator.v0.0.1
