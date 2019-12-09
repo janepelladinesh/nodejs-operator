@@ -16,9 +16,9 @@ spec:
   customresourcedefinitions:
     owned:
     - description: Describes application deployment
-      displayName: NodejsOperator
-      kind: AppsodyApplication
-      name: appsodyapplications.appsody.dev
+      displayName: Nodejs
+      kind: Nodejs
+      name: nodejs.demo.example.com
       resources:
       - kind: Deployment
         name: ''
