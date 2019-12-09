@@ -2,11 +2,9 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: '[{"apiVersion":"appsody.dev/v1beta1","kind":"AppsodyApplication","metadata":{"name":"example-appsodyapplication"},"spec":{"applicationImage":"APPLICATION_IMAGE","stack":"java-microprofile"}}]'
     capabilities: Seamless Upgrades
     categories: Application Runtime
     certified: 'true'
-    containerImage: 'appsody/application-operator:0.3.0'
     createdAt: 2019-12-02 09:00:00
     description: Deploys Appsody based applications
     repository: https://github.com/appsody/appsody-operator
@@ -15,21 +13,23 @@ metadata:
 spec:
   customresourcedefinitions:
     owned:
-    - description: Describes application deployment
+    - description: Nodejs
       displayName: Nodejs
       kind: Nodejs
       name: nodejs.demo.example.com
       resources:
-      - kind: Deployment
-        name: ''
-      - kind: StatefulSet
-        name: ''
-      - kind: Service
-        name: ''
-      - kind: Route
-        name: ''
-      - kind: HorizontalPodAutoscaler
-        name: ''
+        - version: v1
+            kind: Deployment
+        - version: v1
+            kind: Service
+        - version: v1
+            kind: ReplicaSet
+        - version: v1
+            kind: Pod
+        - version: v1
+            kind: Secret
+        - version: v1
+            kind: ConfigMap
       specDescriptors:
       - description: application stack
         displayName: Stack
