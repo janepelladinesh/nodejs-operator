@@ -2,12 +2,12 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   name: node-operator.v0.0.1
-  namespace: placeholder
+  namespace: marketplace
   annotations:
     alm-examples: >-
       [{"apiVersion":"","kind":"","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"","metadata":{"name":""},"spec":{}},{"apiVersion":"apiextensions.k8s.io/v1beta1","kind":"","metadata":{"name":"nodejs.demo.example.com"},"spec":{"group":"demo.example.com","names":{"kind":"Nodejs","listKind":"NodejsList","plural":"nodejs","singular":"nodejs"},"scope":"Namespaced","subresources":{"status":{}},"version":"v1alpha1","versions":[{"name":"v1alpha1","served":true,"storage":true}]}},{"apiVersion":"apiextensions.k8s.io/v1beta1","kind":"","metadata":{"name":"nodejs.demo.example.com"},"spec":{"group":"demo.example.com","names":{"kind":"Nodejs","listKind":"NodejsList","plural":"nodejs","singular":"nodejs"},"scope":"Namespaced","subresources":{"status":{}},"version":"v1alpha1","versions":[{"name":"v1alpha1","served":true,"storage":true}]}},{"apiVersion":"","kind":"","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"Nodejs","metadata":{"name":""},"spec":{}}]
-    categories: Database
-    certified: 'false'
+    categories: Application Runtime
+    certified: 'true'
     description: >-
       build and develop nodejs application and using operators for managing the
       application
@@ -68,7 +68,7 @@ spec:
     strategy: deployment
     spec:
       permissions:
-        - serviceAccountName: nodejs-operator
+        - serviceAccountName: node-operator
           rules:
             - apiGroups: '""'
               resources:
@@ -82,7 +82,7 @@ spec:
               verbs:
                 - '*'
       clusterPermissions:
-        - serviceAccountName: nodejs-operator
+        - serviceAccountName: node-operator
           rules:
             - apiGroups: '""'
               resources:
@@ -96,21 +96,21 @@ spec:
               verbs:
                 - '*'
       deployments:
-        - name: nodejs-deployment
+        - name: node-deployment
           spec:
             replicas: 1
             selector:
               matchLabels:
-                k8s-app: nodejs-operator
+                k8s-app: node-operator
             template:
               metadata:
                 labels:
-                  k8s-app: nodejs-operator
+                  k8s-app: node-operator
               spec:
                 containers:
-                  image: 'quay.io/deekshith_vemula/example:v1'
+                  image: 'quay.io/deekshith_vemula/example:operator'
                   imagePullPolicy: Always
-                  name: nodejs-operator
+                  name: node-operator
                   resources:
                     limits:
                       cpu: 200m
@@ -128,12 +128,12 @@ spec:
                         fieldRef:
                           fieldPath: metadata.name
                     - name: OPERATOR_NAME
-                      value: nodejs-operator
+                      value: node-operator
                 imagePullSecrets:
                   - name: ''
                 nodeSelector:
                   beta.kubernetes.io/os: linux
-                serviceAccountName: nodejs-operator
+                serviceAccountName: node-operator
   installModes:
     - type: OwnNamespace
       supported: true
