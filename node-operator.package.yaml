@@ -1,5 +1,5 @@
-channels:
-- currentCSV: node-operator.v0.0.1
-  name: node-operator.v0.0.1
-defaultChannel: node-operator.v0.0.1
 packageName: node-operator
+channels:
+  - name: node-operator.v0.01
+    currentCSV: node-operator.v0.0.1
+defaultChannel: node-operator.v0.0.1
